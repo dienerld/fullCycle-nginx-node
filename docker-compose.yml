@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: node
+    container_name: fc-server
+    volumes:
+      - ./node:/home/app
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 50s -- pnpm dev
+    ports:
+      - "3000:3000"
+    networks:
+      - fc-network
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8.0
+    container_name: fc-db
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: fc
+      MYSQL_USER: fc
+      MYSQL_PASSWORD: fc
+    command: --innodb-use-native-aio=0
+    ports:
+      - "3306:3306"
+    networks:
+      - fc-network
+
+
+  nginx:
+    build:
+      context: nginx
+    container_name: fc-nginx
+    entrypoint: dockerize -wait tcp://server:8080 -timeout 50s /docker-entrypoint.sh "nginx" "-g" "daemon off;"
+    ports:
+      - "8080:80"
+    depends_on:
+      - server
+      - db
+    networks:
+      - fc-network
+
+networks:
+  fc-network:
+    driver: bridge
