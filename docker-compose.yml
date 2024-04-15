@@ -9,7 +9,7 @@ services:
       - ./node:/home/app
     entrypoint: dockerize -wait tcp://db:3306 -timeout 50s -- pnpm dev
     ports:
-      - "3000:3000"
+      - "8080:8080"
     networks:
       - fc-network
     depends_on:

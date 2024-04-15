@@ -22,6 +22,6 @@ RUN pnpm install
 
 COPY --chown=node:node ./src ./src
 
-EXPOSE 3000
+EXPOSE 8080
 
 ENTRYPOINT [ "pnpm", "dev" ]
