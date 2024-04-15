@@ -28,9 +28,12 @@ app.get('/', async (req, res) => {
   await conn.query(sqlInsert);
 
   const [rows] = await conn.query('SELECT * FROM users');
-  res.send({
-    data: rows
-  });
+  res.send(`
+    <h1>Full Cycle Rocks!</h1>
+    <ul>
+      ${rows.map(row => `<li>${row.name}</li>`).join('')}
+    </ul>
+  `);
 
 })
 
