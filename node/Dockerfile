@@ -15,13 +15,11 @@ USER app
 
 WORKDIR /home/app
 
-COPY --chown=node:node package*.json ./
-COPY --chown=node:node pnpm-lock.yaml ./
-
-RUN pnpm install
+COPY --chown=node:node package.json .
+COPY --chown=node:node pnpm-lock.yaml .
 
 COPY --chown=node:node ./src ./src
 
-EXPOSE 8080
+RUN pnpm i
 
-ENTRYPOINT [ "pnpm", "dev" ]
+ENTRYPOINT [ "pnpm", "start" ]

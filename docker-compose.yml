@@ -8,8 +8,6 @@ services:
     volumes:
       - ./node:/home/app
     entrypoint: dockerize -wait tcp://db:3306 -timeout 50s -- pnpm dev
-    ports:
-      - "8080:8080"
     networks:
       - fc-network
     depends_on:
@@ -34,7 +32,7 @@ services:
     build:
       context: nginx
     container_name: fc-nginx
-    entrypoint: dockerize -wait tcp://server:8080 -timeout 50s /docker-entrypoint.sh "nginx" "-g" "daemon off;"
+    entrypoint: dockerize -wait tcp://server:3000 -timeout 50s /docker-entrypoint.sh "nginx" "-g" "daemon off;"
     ports:
       - "8080:80"
     depends_on:

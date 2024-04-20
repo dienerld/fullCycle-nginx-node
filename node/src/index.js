@@ -36,13 +36,13 @@ app.get('/', async (req, res) => {
   `);
 
 })
+const PORT = 3000
+async function init() {
+  conn = await mysql.createConnection(config)
+  await db();
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+  });
+}
 
-app.listen(8080, async () => {
-  console.log('Server is running on port 8080');
-  try {
-    conn = await mysql.createConnection(config)
-    await db()
-  } catch (error) {
-    console.log('Error: ', error);
-  }
-});
+init();
