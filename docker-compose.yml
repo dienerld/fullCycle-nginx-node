@@ -33,7 +33,7 @@ services:
     container_name: fc-nginx
     entrypoint: dockerize -wait tcp://server:3000 -timeout 50s /docker-entrypoint.sh "nginx" "-g" "daemon off;"
     ports:
-      - "8081:80"
+      - "8080:80"
     depends_on:
       - server
       - db
