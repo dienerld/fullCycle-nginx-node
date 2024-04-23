@@ -3,7 +3,7 @@ FROM node:21.1-alpine
 # create a new user and group for the app
 RUN addgroup -S app && adduser -S app -G app && chown -R app:app /home/app
 
-RUN npm install -g pnpm --unsafe-perm && npm cache clean --force
+WORKDIR /home/app
 
 ENV DOCKERIZE_VERSION v0.7.0
 
@@ -13,13 +13,12 @@ RUN apk update --no-cache \
 
 USER app
 
-WORKDIR /home/app
+COPY --chown=app:app package.json .
 
-COPY --chown=node:node package.json .
-COPY --chown=node:node pnpm-lock.yaml .
+COPY --chown=app:app yarn.lock .
 
-COPY --chown=node:node ./src ./src
+RUN yarn
 
-RUN pnpm i
+COPY --chown=app:app ./src ./src
 
-ENTRYPOINT [ "pnpm", "start" ]
+ENTRYPOINT [ "yarn", "start" ]
