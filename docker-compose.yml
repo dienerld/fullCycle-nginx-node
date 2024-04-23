@@ -5,6 +5,7 @@ services:
     container_name: fc-server
     volumes:
       - ./node:/home/app
+      - /home/app/node_modules
     entrypoint: dockerize -wait tcp://db:3306 -timeout 50s -- yarn start
     networks:
       - fc-network
